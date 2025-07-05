@@ -1,0 +1,42 @@
+services:
+  - type: web
+    name: daily-basic-tracker
+    env: python
+    buildCommand: pip install -r requirements_cloud.txt
+    startCommand: python daily_scheduler.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.16
+      - key: REQUEST_DELAY_MIN
+        value: 8
+      - key: REQUEST_DELAY_MAX
+        value: 15
+      - key: BATCH_DELAY
+        value: 60
+      - key: BATCH_SIZE
+        value: 10
+      - key: ENABLE_GOOGLE_SHEETS
+        value: true
+      - key: POST_KARMA_COL
+        value: 14
+      - key: COMMENT_KARMA_COL
+        value: 15
+      - key: CREATED_DATE_COL
+        value: 16
+      - key: ACCOUNT_AGE_COL
+        value: 17
+      - key: LAST_ACTIVITY_COL
+        value: 18
+      - key: USERNAME_COLUMN
+        value: I
+      - key: DAILY_SCHEDULE_TIMES
+        value: 06:00,12:00,18:00,00:00
+      - key: TIMEZONE
+        value: UTC
+      # Add your environment variables here:
+      # - key: SPREADSHEET_ID
+      #   value: your-spreadsheet-id
+      # - key: SHEET_NAME
+      #   value: Sheet1
+      # - key: GOOGLE_SHEETS_CREDENTIALS
+      #   value: {"type":"service_account",...} 

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Basic Analysis Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 Simple Basic Analysis Tracker</h1>
+            <p>Import usernames from Google Sheets and run basic analysis</p>
+        </header>
+        
+        <div class="main-content">
+            <!-- Username Management -->
+            <div class="section">
+                <h2>👥 Username Management</h2>
+                
+                <!-- Manual Username Entry -->
+                <div class="card">
+                    <h3>Add Usernames Manually</h3>
+                    <textarea id="usernames" placeholder="Enter usernames (one per line)"></textarea>
+                    <button onclick="addUsernames()" class="btn btn-primary">Add Usernames</button>
+                </div>
+                
+                <!-- Google Sheets Import -->
+                <div class="card">
+                    <h3>Import from Google Sheets</h3>
+                    <div class="form-group">
+                        <label for="spreadsheet_id">Spreadsheet ID:</label>
+                        <input type="text" id="spreadsheet_id" placeholder="1O8Eerxa78jBBzXLTaUXIzYWoMrgi0AMHrtiiZHRvT7A">
+                    </div>
+                    <div class="form-group">
+                        <label for="sheet_name">Sheet Name:</label>
+                        <input type="text" id="sheet_name" value="Sheet1">
+                    </div>
+                    <div class="form-group">
+                        <label for="column">Column:</label>
+                        <input type="text" id="column" value="I" style="width: 60px;">
+                    </div>
+                    <button onclick="importFromGoogleSheets()" class="btn btn-success">Import from Google Sheets</button>
+                </div>
+                
+                <!-- Current Usernames -->
+                <div class="card">
+                    <h3>Current Usernames ({{ usernames|length }})</h3>
+                    <div id="username-list">
+                        {% for username in usernames %}
+                        <span class="username-tag">{{ username }}</span>
+                        {% endfor %}
+                    </div>
+                    <button onclick="clearUsernames()" class="btn btn-danger">Clear All</button>
+                </div>
+            </div>
+
+            <!-- Analysis Control -->
+            <div class="section">
+                <h2>🚀 Analysis Control</h2>
+                <div class="card">
+                    <h3>Run Basic Analysis</h3>
+                    <p>Fetches basic account info (karma, age, last activity) and writes back to Google Sheets</p>
+                    <button onclick="startAnalysis()" class="btn btn-primary">Start Analysis</button>
+                    <div id="analysis-status" class="status-box">
+                        <p>Status: <span id="status-text">Ready</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Configuration -->
+            <div class="section">
+                <h2>⚙️ Configuration</h2>
+                
+                <!-- Rate Limiting Settings -->
+                <div class="card">
+                    <h3>Rate Limiting Settings</h3>
+                    <form id="config-form">
+                        <div class="form-group">
+                            <label>Request Delay Min (seconds):</label>
+                            <input type="number" name="request_delay_min" value="{{ config.request_delay_min }}" min="1" max="60">
+                        </div>
+                        <div class="form-group">
+                            <label>Request Delay Max (seconds):</label>
+                            <input type="number" name="request_delay_max" value="{{ config.request_delay_max }}" min="1" max="60">
+                        </div>
+                        <div class="form-group">
+                            <label>Batch Delay (seconds):</label>
+                            <input type="number" name="batch_delay" value="{{ config.batch_delay }}" min="10" max="300">
+                        </div>
+                        <div class="form-group">
+                            <label>Batch Size:</label>
+                            <input type="number" name="batch_size" value="{{ config.batch_size }}" min="1" max="50">
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" name="enable_google_sheets" {% if config.enable_google_sheets %}checked{% endif %}>
+                                Enable Google Sheets Write-Back
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Configuration</button>
+                    </form>
+                </div>
+                
+                <!-- Google Sheets Column Mapping -->
+                <div class="card">
+                    <h3>Google Sheets Column Mapping</h3>
+                    <p>Configure which columns to write data to in your Google Sheet:</p>
+                    <form id="columns-form">
+                        <div class="form-group">
+                            <label for="post_karma">Post Karma Column:</label>
+                            <input type="text" id="post_karma" name="post_karma" value="{{ config.google_sheets_columns.post_karma if config.google_sheets_columns else 14 }}" placeholder="14 (Column N)">
+                            <small>Enter column number (14 = Column N, 15 = Column O, etc.)</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="comment_karma">Comment Karma Column:</label>
+                            <input type="text" id="comment_karma" name="comment_karma" value="{{ config.google_sheets_columns.comment_karma if config.google_sheets_columns else 15 }}" placeholder="15 (Column O)">
+                        </div>
+                        <div class="form-group">
+                            <label for="created_date">Created Date Column:</label>
+                            <input type="text" id="created_date" name="created_date" value="{{ config.google_sheets_columns.created_date if config.google_sheets_columns else 16 }}" placeholder="16 (Column P)">
+                        </div>
+                        <div class="form-group">
+                            <label for="account_age_days">Account Age (Days) Column:</label>
+                            <input type="text" id="account_age_days" name="account_age_days" value="{{ config.google_sheets_columns.account_age_days if config.google_sheets_columns else 17 }}" placeholder="17 (Column Q)">
+                        </div>
+                        <div class="form-group">
+                            <label for="last_activity">Last Activity Column:</label>
+                            <input type="text" id="last_activity" name="last_activity" value="{{ config.google_sheets_columns.last_activity if config.google_sheets_columns else 18 }}" placeholder="18 (Column R)">
+                        </div>
+                        <button type="submit" class="btn btn-success">Save Column Mapping</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration - SimpleBasicTracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Configuration</h1>
+        <a href="/" class="btn">← Back to Dashboard</a>
+        
+        <div class="section">
+            <h2>Rate Limiting Settings</h2>
+            <form id="config-form">
+                <div class="form-group">
+                    <label>Request Delay Min (seconds):</label>
+                    <input type="number" name="request_delay_min" value="{{ config.request_delay_min }}" min="1" max="60">
+                </div>
+                <div class="form-group">
+                    <label>Request Delay Max (seconds):</label>
+                    <input type="number" name="request_delay_max" value="{{ config.request_delay_max }}" min="1" max="60">
+                </div>
+                <div class="form-group">
+                    <label>Batch Delay (seconds):</label>
+                    <input type="number" name="batch_delay" value="{{ config.batch_delay }}" min="10" max="300">
+                </div>
+                <div class="form-group">
+                    <label>Batch Size:</label>
+                    <input type="number" name="batch_size" value="{{ config.batch_size }}" min="1" max="50">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="enable_google_sheets" {% if config.enable_google_sheets %}checked{% endif %}>
+                        Enable Google Sheets Write-Back
+                    </label>
+                </div>
+                <button type="submit" class="btn">Save Configuration</button>
+            </form>
+        </div>
+        
+        <div class="section">
+            <h2>Google Sheets Column Mapping</h2>
+            <form id="columns-form">
+                <div class="form-group">
+                    <label>Post Karma Column:</label>
+                    <input type="number" name="post_karma" value="{{ config.google_sheets_columns.post_karma if config.google_sheets_columns else 14 }}" min="1">
+                    <small>Column N = 14, Column O = 15, etc.</small>
+                </div>
+                <div class="form-group">
+                    <label>Comment Karma Column:</label>
+                    <input type="number" name="comment_karma" value="{{ config.google_sheets_columns.comment_karma if config.google_sheets_columns else 15 }}" min="1">
+                </div>
+                <div class="form-group">
+                    <label>Created Date Column:</label>
+                    <input type="number" name="created_date" value="{{ config.google_sheets_columns.created_date if config.google_sheets_columns else 16 }}" min="1">
+                </div>
+                <div class="form-group">
+                    <label>Account Age (Days) Column:</label>
+                    <input type="number" name="account_age_days" value="{{ config.google_sheets_columns.account_age_days if config.google_sheets_columns else 17 }}" min="1">
+                </div>
+                <div class="form-group">
+                    <label>Last Activity Column:</label>
+                    <input type="number" name="last_activity" value="{{ config.google_sheets_columns.last_activity if config.google_sheets_columns else 18 }}" min="1">
+                </div>
+                <button type="submit" class="btn">Save Column Mapping</button>
+            </form>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

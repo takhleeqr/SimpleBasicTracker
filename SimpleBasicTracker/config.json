@@ -1,0 +1,14 @@
+{
+  "request_delay_min": 8,
+  "request_delay_max": 15,
+  "batch_delay": 60,
+  "batch_size": 10,
+  "enable_google_sheets": true,
+  "google_sheets_columns": {
+    "post_karma": 14,
+    "comment_karma": 15,
+    "created_date": 16,
+    "account_age_days": 17,
+    "last_activity": 18
+  }
+}

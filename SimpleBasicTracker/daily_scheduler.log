@@ -1,0 +1,13 @@
+2025-07-06 00:21:40,688 - INFO - Starting daily analysis
+2025-07-06 00:21:40,690 - INFO - Loaded 106 usernames
+2025-07-06 00:21:40,692 - INFO - Processing batch 1/11: 10 usernames
+2025-07-06 00:21:40,693 - INFO - Fetching data for thaliapole
+2025-07-06 00:21:45,624 - INFO - Writing thaliapole to Google Sheets immediately
+2025-07-06 00:21:45,625 - INFO - Starting Google Sheets update for 1 results
+2025-07-06 00:21:45,625 - INFO - Spreadsheet ID: 1O8Eerxa78jBBzXLTaUXIzYWoMrgi0AMHrtiiZHRvT7A
+2025-07-06 00:21:45,627 - INFO - Sheet name: Sheet1
+2025-07-06 00:21:45,628 - INFO - Username data count: 106
+2025-07-06 00:21:49,290 - INFO - Column mapping: {'post_karma': 14, 'comment_karma': 15, 'created_date': 16, 'account_age_days': 17, 'last_activity': 18}
+2025-07-06 00:21:49,292 - INFO - Processing thaliapole at row 2
+2025-07-06 00:21:51,753 - INFO - Updated thaliapole row 2 with data: karma=2621,807, age=65
+2025-07-06 00:21:52,754 - INFO - Google Sheets update complete: 1 successful, 0 errors
