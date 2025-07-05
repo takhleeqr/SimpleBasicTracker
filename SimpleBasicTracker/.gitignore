@@ -1,0 +1,13 @@
+# Credentials and sensitive files
+google-sheets-credentials.json
+*.log
+__pycache__/
+*.pyc
+
+# Environment files
+.env
+.env.local
+
+# IDE files
+.vscode/
+.idea/ 
